@@ -1,7 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+require('@/utils/registerComponents');
 
 new Vue({
   render: h => h(App),
