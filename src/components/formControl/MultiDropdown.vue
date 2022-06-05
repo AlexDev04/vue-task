@@ -1,11 +1,11 @@
 <template>
-    <div :class="`dropdownChb-outer ${className}`">
-        <div :class="`${open && 'dropdownChb'} ${dis && 'dropdownChb-dis'}`" @click="handleOpen">
-            <div :class="`${!dis && 'dropdownChb-label'} ${(open || selected) && 'dropdownChb-label-active'}`">
+    <div class="dropdownChb-outer">
+        <div :class="[{'dropdownChb': open}, {'dropdownChb-dis': dis}]" @click="handleOpen">
+            <div :class="[{'dropdownChb-label': !dis}, {'dropdownChb-label-active': (open || selected)}]">
                 <p>{{name}}</p>
                 <img :src="href" />
             </div>
-            <div :class="`dropdownChb-content ${!open && 'hidden'}`" @click="handleChange">
+            <div :class="['dropdownChb-content', {'hidden': !open}]" @click="handleChange">
                 <slot className="dropdownChb-content-el" active="dropdownChb-content-el-active" :selected="selected"></slot>
             </div>
         </div>
@@ -39,7 +39,7 @@ export default {
         handleChange(evt) {
             const element = this.selected.find(el => el == evt.target.innerHTML);
             if(element) {
-                index = this.selected.indexOf(element);
+                const index = this.selected.indexOf(element);
                 this.selected.splice(index)
             }
             else if(!element) this.selected.push(evt.target.innerHTML)

@@ -1,9 +1,9 @@
 <template>
     <section class="pager">
         <div class="pager-left">
-            <MyBut type="default" :onClick="back" :dis="pageCur == 0" text="Назад" />
+            <MyBut type="default" @click="back" :dis="pageCur == 0" text="Назад" />
             <MyBut v-for="(item, index) in pagesArr" :key="index" :type="index == pageCur? 'primary': 'default'" :text="index + 1" />
-            <MyBut type="default" :onClick="forward" :dis="pageCur == maxPageCur" text="Вперед" />
+            <MyBut type="default" @click="forward" :dis="pageCur == maxPageCur" text="Вперед" />
         </div>
         <div class="placeholder">
             Показано 

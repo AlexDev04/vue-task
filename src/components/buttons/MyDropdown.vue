@@ -1,12 +1,12 @@
 <template>
-    <div :class="`dropdown-outer ${className}`">
+    <div class="dropdown-outer">
         <div :class="`${open && 'dropdown'} ${dis && 'dropdown-dis'}`" @click="handleOpen">
-            <div :class="`${!dis && 'dropdown-label'} ${(open || selected) && 'dropdown-label-active'}`">
-                <p>{{ selected || name}}</p>
+            <div :class="`${!dis && 'dropdown-label'} ${(open || selected.en) && 'dropdown-label-active'}`">
+                <p>{{ selected.ru || name}}</p>
                 <img :src="href" />
             </div>
             <div :class="`dropdown-content ${!open && 'hidden'}`" @click="handleChange">
-                <slot className="dropdown-content-el" active="dropdown-content-el-active" :selected="selected"></slot>
+                <slot className="dropdown-content-el" active="dropdown-content-el-active" :selected="selected.en"></slot>
             </div>
         </div>
     </div>
@@ -18,16 +18,12 @@ export default {
         return {
             open: false,
             name: 'open me',
-            selected: ''
+            selected: {ru: '', en: ''}
         }
     },
     props: {
         dis: {
             type: Boolean,
-            required: false
-        },
-        className: {
-            type: String,
             required: false
         }
     },
@@ -37,7 +33,8 @@ export default {
             console.log(this.open)
         },
         handleChange(evt) {
-            this.selected = evt.target.innerHTML;
+            this.selected.en = evt.target.getAttribute('name');
+            this.selected.ru = evt.target.innerHTML;
             console.log(this.selected)
         }
     },
@@ -128,12 +125,13 @@ export default {
         &-el
             padding: 4px 5.5px
             cursor: pointer
-
-            &-active
-                background-color: $primary
-                color: $disabled-text
+            display: flex
+            justify-content: flex-start
 
             &:hover
                 background-color: #E6E1FF
                 color: $text-color
+        .active
+            background-color: $primary
+            color: $disabled-text
 </style>

@@ -1,6 +1,6 @@
 <template>
         <div 
-            :class="['checkbox', className]"
+            class="checkbox"
             :text="text"
             :name="valEn"
             @click="handleClick"
@@ -36,10 +36,6 @@ export default {
         valEn: {
             type: String || Number,
             required: true
-        },
-        className: {
-            type: String || Number,
-            required: false
         }
     }
 }

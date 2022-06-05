@@ -1,5 +1,5 @@
 <template>
-    <button :class="[className, butType]" :disabled="dis" @click="handleClick, onClick()">{{text}}</button>
+    <button :class=" butType" v-on="$listeners" :disabled="dis">{{text}}</button>
 </template>
 
 
@@ -11,11 +11,6 @@ export default {
             butType: 'default'
         }
     },
-    methods: {
-        handleClick(e) {
-            console.log(e.target)
-        }
-    },
     props: {
         type: {
             type: String,
@@ -25,23 +20,15 @@ export default {
             type: String || Number,
             required: true
         },
-        className: {
-            type: String,
-            required: false
-        },
-        onClick: {
-            type: Function,
-            required: false
-        },
         dis: {
             type: Boolean,
             required: false
         }
     },
     mounted() {
-        if(this.type != undefined) this.butType = this.type;
+        if(this.type == undefined) this.butType = 'default'
+        else this.butType = this.type;
         if(this.dis) this.butType = 'disabled'
-
     },
     watch:{
         dis() {
@@ -49,7 +36,8 @@ export default {
             if(!this.dis) this.butType = ''
         },
         type() {
-            if(this.type != undefined) this.butType = this.type;
+        if(this.type == undefined) this.butType = 'default'
+        else this.butType = this.type;
         }
     }
 }

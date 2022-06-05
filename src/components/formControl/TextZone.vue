@@ -1,5 +1,5 @@
 <template>
-    <textarea @keyup="handleChange" :class="[className, `textInput-${areaType}`]"></textarea>
+    <textarea @keyup="handleChange" :class="`textZone-${areaType}`"></textarea>
 </template>
 
 
@@ -24,10 +24,6 @@ export default {
         val: {
             type: String || Number,
             required: false
-        },
-        className: {
-            type: String,
-            required: false
         }
     },
     mounted() {
@@ -38,7 +34,7 @@ export default {
 </script>
 
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../_styles/style'
 
 @mixin zone()
