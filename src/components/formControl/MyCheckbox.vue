@@ -1,7 +1,6 @@
 <template>
         <div 
             class="checkbox"
-            :text="text"
             :name="valEn"
             @click="handleClick"
         >
@@ -10,7 +9,7 @@
                 :name="valEn" 
                 :checked="clicked"
             />
-            <label :htmlFor="text" :name="valEn">{{text}}</label>
+            <label :htmlFor="valEn" :name="valEn">{{text}}</label>
         </div>
 </template>
 
@@ -23,9 +22,8 @@ export default {
         }
     },
     methods: {
-        handleClick(e) {
+        handleClick() {
             this.clicked = !this.clicked;
-            console.log(e.target)
         }
     },
     props: {
@@ -35,7 +33,16 @@ export default {
         },
         valEn: {
             type: String || Number,
-            required: true
+            required: false
+        },
+        checked: {
+            type: Boolean,
+            required: false
+        }
+    },
+    watch: {
+        checked() {
+            this.clicked = this.checked
         }
     }
 }

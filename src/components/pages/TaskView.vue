@@ -17,7 +17,7 @@
                 <p>{{task.dateOfUpdate}}</p>
                 <p class="placeholder">Затрачено времени</p>
                 <p>{{task.timeInMinutes}} минут</p>
-                <MyBut type="primary"  @click="openModal" text="Сделать запись о работе" />
+                <MyBut type="primary"  @click="openModal">Сделать запись о работе</MyBut>
             </section>
             <hr />
             <section class="taskPage-center">
@@ -28,7 +28,7 @@
             <section class="taskPage-right">
                 <p class="placeholder">Комментарии({{task.comments.length}})</p>
                 <TextZone placeholder="Текст комментария" type="primary" updateData={updateCommentText}>{commentText}</TextZone>
-                <MyBut type="success" @click="addComment" text="Добавить комментарий" />
+                <MyBut type="success" @click="addComment">Добавить комментарий</MyBut>
                 <div class="comments">
                     <!-- {store.openedTask.comments.map(el => 
                         <div key={el.id} className="comments-item">
@@ -63,6 +63,7 @@ export default {
                 typeEn: 'task',
                 rankRu: 'Средний',
                 rankEn: 'middle',
+                status: 'opened',
                 dateOfCreation: '01.01.2022',
                 dateOfUpdate: '01.05.2022',
                 timeInMinutes: 30,
@@ -72,6 +73,9 @@ export default {
             }
         }
     },
+    mounted() {
+        console.log(this.id)
+    },
     methods: {
         addComment() {
             console.log('add comment')
@@ -79,6 +83,9 @@ export default {
         openModal() {
             console.log('open modal')
         }
+    },
+    props: {
+        id: Number
     }
 }
 

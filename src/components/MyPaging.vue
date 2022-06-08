@@ -1,17 +1,12 @@
 <template>
     <section class="pager">
         <div class="pager-left">
-            <MyBut type="default" @click="back" :dis="pageCur == 0" text="Назад" />
-            <MyBut v-for="(item, index) in pagesArr" :key="index" :type="index == pageCur? 'primary': 'default'" :text="index + 1" />
-            <MyBut type="default" @click="forward" :dis="pageCur == maxPageCur" text="Вперед" />
+            <MyBut type="default" @click="$emit('prevPage')" :dis="pageCur == 0">Назад</MyBut>
+            <MyBut v-for="(item, index) in pagesArr" :key="index" @click="$emit('toPage', index)" :type="index == pageCur? 'primary': 'default'">{{index + 1}}</MyBut>
+            <MyBut type="default" @click="$emit('nextPage')" :dis="pageCur == maxPageCur">Вперед</MyBut>
         </div>
         <div class="placeholder">
-            Показано 
-            {{pageCur != maxPageCur
-            ?' ' + pageCur + '1' + '-' + (+ pageCur + 1) + '0' + ' '
-            :' ' + pageCur + '1' + '-' + totalCur + ' '
-            }}
-            из {{totalCur}}
+            Показано {{range}} из {{totalCur}}
         </div>
     </section>
 </template>
@@ -21,11 +16,6 @@
     export default{
         data() {
             return{
-                pageCur: 0,
-                maxPageCur: 0,
-                totalCur: 0,
-                pagesCur: 0,
-                pagesArr: []
             }
         },
         props: {
@@ -38,21 +28,15 @@
                 required: true
             }
         },
-        mounted() {
-            this.pageCur = + this.page;
-            this.maxPageCur = Math.ceil(this.total / 10 - 1);
-            this.totalCur = + this.total;
-            this.pagesCur = Math.ceil(this.total / 10);
-            this.pagesArr = [...Array(this.pagesCur)];
-        },
-        methods: {
-            back() {
-                this.pageCur = this.pageCur - 1;
-                console.log(this.pageCur)
-            },
-            forward() {
-                this.pageCur = this.pageCur + 1;
-                console.log(this.pageCur)
+        computed: {
+            pageCur(){return + this.page},
+            maxPageCur(){return Math.ceil(this.total / 10 - 1)},
+            totalCur() {return + this.total},
+            pagesCur() {return Math.ceil(this.total / 10)},
+            pagesArr() {return [...Array(this.pagesCur)]},
+            range() {
+                if(this.pageCur != this.maxPageCur) return ' ' + this.pageCur + '1' + '-' + (+ this.pageCur + 1) + '0'
+                else return ' ' + this.pageCur + '1' + '-' + this.totalCur
             }
         }
     }

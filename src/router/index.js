@@ -7,7 +7,6 @@ import NotFound from '@/components/pages/NotFound.vue'
 import UserList from '@/components/pages/UserList.vue'
 import TaskView from '@/components/pages/TaskView.vue'
 import TaskEdit from '@/components/pages/TaskEdit.vue'
-import TaskAdd from '@/components/pages/TaskAdd.vue'
 import UserView from '@/components/pages/UserView.vue'
 
 const routes = [
@@ -20,16 +19,13 @@ const routes = [
     path: '/task/:id',
     name: 'task',
     component: TaskView,
+    props: true
   },
   {
     path: '/taskEdit/:id',
     name: 'taskEdit',
-    component: TaskEdit
-  },
-  {
-    path: '/taskAdd',
-    name: 'taskAdd',
-    component: TaskAdd
+    component: TaskEdit,
+    props: true
   },
   {
     path: '/users',
@@ -39,7 +35,8 @@ const routes = [
   {
     path: '/user/:id',
     name: 'user',
-    component: UserView
+    component: UserView,
+    props: true
   },
   {
     path: '/nf',

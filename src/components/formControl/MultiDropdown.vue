@@ -1,12 +1,12 @@
 <template>
     <div class="dropdownChb-outer">
         <div :class="[{'dropdownChb': open}, {'dropdownChb-dis': dis}]" @click="handleOpen">
-            <div :class="[{'dropdownChb-label': !dis}, {'dropdownChb-label-active': (open || selected)}]">
+            <div :class="[{'dropdownChb-label': !dis}, {'dropdownChb-label-active': (open || curSelected.length)}]">
                 <p>{{name}}</p>
                 <img :src="href" />
             </div>
             <div :class="['dropdownChb-content', {'hidden': !open}]" @click="handleChange">
-                <slot className="dropdownChb-content-el" active="dropdownChb-content-el-active" :selected="selected"></slot>
+                <slot className="dropdownChb-content-el" active="dropdownChb-content-el-active" :sel="curSelected"></slot>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@ export default {
         return {
             open: false,
             name: 'open me',
-            selected: []
+            curSelected: []
         }
     },
     props: {
@@ -29,6 +29,10 @@ export default {
         className: {
             type: String,
             required: false
+        },
+        selected: {
+            type: Array,
+            required: false
         }
     },
     methods: {
@@ -37,19 +41,29 @@ export default {
             console.log(this.open)
         },
         handleChange(evt) {
-            const element = this.selected.find(el => el == evt.target.innerHTML);
+            const element = this.curSelected.find(el => el == evt.target.getAttribute('name'));
             if(element) {
-                const index = this.selected.indexOf(element);
-                this.selected.splice(index)
+                const index = this.curSelected.indexOf(element);
+                this.curSelected.splice(index)
             }
-            else if(!element) this.selected.push(evt.target.innerHTML)
-            console.log(evt.target.innerHTML, this.selected)
+            else if(!element) this.curSelected.push(evt.target.getAttribute('name'))
+            console.log(evt.target.getAttribute('name'), this.curSelected)
+            this.$emit('select', this.curSelected)
         }
     },
     computed: {
         href() {
             if(this.open) return '/_images/openedDropdown.svg';
             if(!this.open) return '/_images/closedDropdown.svg'
+        }
+    },
+    mounted() {
+        console.log(this.curSelected)
+        if(this.selected) this.curSelected = this.selected
+    },
+    watch: {
+        selected() {
+            if(this.selected) this.curSelected = this.selected
         }
     }
 }

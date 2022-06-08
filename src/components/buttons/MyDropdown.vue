@@ -1,12 +1,12 @@
 <template>
     <div class="dropdown-outer">
         <div :class="`${open && 'dropdown'} ${dis && 'dropdown-dis'}`" @click="handleOpen">
-            <div :class="`${!dis && 'dropdown-label'} ${(open || selected.en) && 'dropdown-label-active'}`">
-                <p>{{ selected.ru || name}}</p>
+            <div :class="`${!dis && 'dropdown-label'} ${(open || curSelected.en) && 'dropdown-label-active'}`">
+                <p>{{ curSelected.ru || name}}</p>
                 <img :src="href" />
             </div>
             <div :class="`dropdown-content ${!open && 'hidden'}`" @click="handleChange">
-                <slot className="dropdown-content-el" active="dropdown-content-el-active" :selected="selected.en"></slot>
+                <slot className="dropdown-content-el" active="dropdown-content-el-active" :selected="curSelected.en"></slot>
             </div>
         </div>
     </div>
@@ -18,24 +18,31 @@ export default {
         return {
             open: false,
             name: 'open me',
-            selected: {ru: '', en: ''}
+            curSelected: {ru: '', en: ''}
         }
     },
     props: {
         dis: {
             type: Boolean,
             required: false
+        },
+        selected: {
+            type: Object,
+            required: false
         }
+    },
+    mounted() {
+        this.curSelected.ru = this.selected.ru
+        this.curSelected.en = this.selected.en
     },
     methods: {
         handleOpen() {
             this.open = !this.open
-            console.log(this.open)
         },
         handleChange(evt) {
-            this.selected.en = evt.target.getAttribute('name');
-            this.selected.ru = evt.target.innerHTML;
-            console.log(this.selected)
+            this.curSelected.en = evt.target.getAttribute('name');
+            this.curSelected.ru = evt.target.innerHTML;
+            this.$emit('select', this.curSelected)
         }
     },
     computed: {

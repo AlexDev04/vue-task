@@ -1,5 +1,5 @@
 <template>
-    <textarea @keyup="handleChange" :class="`textZone-${areaType}`"></textarea>
+    <textarea v-on="$listeners" :class="`textZone-${areaType}`" v-model="value"></textarea>
 </template>
 
 
@@ -8,7 +8,8 @@
 export default {
     data() {
         return{
-            areaType: ''
+            areaType: '',
+            value: ''
         }
     },
     methods: {
@@ -27,6 +28,7 @@ export default {
         }
     },
     mounted() {
+        this.value = this.val;
         this.areaType = this.type;
         if(this.type == undefined) this.areaType = 'primary'
     }
