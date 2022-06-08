@@ -1,5 +1,5 @@
 <template>
-    <input @keyup="handleChange" :class="[className, `textInput-${inputType}`]">
+    <input :placeholder="placeholder" @keyup="handleChange" :class="`textInput-${inputType}`">
 </template>
 
 
@@ -21,12 +21,12 @@ export default {
             type: String,
             required: false
         },
-        val: {
-            type: String || Number,
+        placeholder: {
+            type: String,
             required: false
         },
-        className: {
-            type: String,
+        val: {
+            type: String || Number,
             required: false
         }
     },
