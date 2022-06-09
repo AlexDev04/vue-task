@@ -43,8 +43,9 @@
                 <MyBut type="primary" @click="click">Применить</MyBut>
             </section>
             <section class="taskList-list">
+                <TaskListItem v-for="el in getTasks.data" :task="el" :key="el.id" />
             </section>
-            <MyPaging v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="paging.total" />
+            <MyPaging v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="getTasks.total" />
         </main>
     </div>
 </template>
@@ -52,102 +53,126 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import TaskListItem from '../listItems/TaskListItem.vue';
 
 export default {
     data() {
         return {
             task: {
-                assigned: 'Алексей',
-                user: 'Максим',
-                typeRu: 'Задача',
-                typeEn: 'task',
-                rankRu: 'Средний',
-                rankEn: 'middle',
-                status: 'opened',
-                dateOfCreation: '01.01.2022',
-                dateOfUpdate: '01.05.2022',
+                assigned: "Алексей",
+                user: "Максим",
+                typeRu: "Задача",
+                typeEn: "task",
+                rankRu: "Средний",
+                rankEn: "medium",
+                status: "opened",
+                dateOfCreation: "01.01.2022",
+                dateOfUpdate: "01.05.2022",
                 timeInMinutes: 30,
-                title: 'Настроить прокси',
-                desc: 'Задачка',
-                comments: ['ok', 'go']
+                title: "Настроить прокси",
+                desc: "Задачка",
+                comments: ["ok", "go"]
             },
             paging: {
                 page: 0,
-                total: 48
             },
-            name: '',
-            type: '',
-            user: '',
-            status:'',
-            rank: ''
-        }
+            name: "",
+            type: [],
+            user: [],
+            status: [],
+            rank: []
+        };
     },
     methods: {
-        ...mapActions(['setActiveTab', 'setFilters']),
-        click() { console.log("click"); },
+        ...mapActions(["setActiveTab", "setFilters", "fetchAllTasks", "fetchTasks", "fetchAllUsers"]),
         pageUp() {
-            this.paging.page = this.paging.page + 1
+            this.paging.page = this.paging.page + 1;
         },
         pageDn() {
-            this.paging.page = this.paging.page - 1
+            this.paging.page = this.paging.page - 1;
         },
         toPage(p) {
-            this.paging.page = p
+            this.paging.page = p;
         },
         changeName(evt) {
-            this.name = evt.target.value
+            this.name = evt.target.value;
         },
         handleType(val) {
-            console.log( val)
-            this.type = val
+            console.log(val);
+            this.type = val;
         },
         handleUser(val) {
-            this.user = val
+            this.user = val;
         },
         handleStatus(val) {
-            this.status = val
+            this.status = val;
         },
         handleRank(val) {
-            this.rank = val
-        }
+            this.rank = val;
+        },
+        click() {
+            this.fetchTasks({ filter: {
+                    query: this.name,
+                    assignedUsers: this.user,
+                    type: this.type,
+                    status: this.status,
+                    rank: this.rank
+                }, page: this.curPage });
+            console.log(this.getTasks);
+        },
     },
     computed: {
-        ...mapGetters(['activeTab', 'filters', 'getCurrentFilters']),
+        ...mapGetters(["activeTab", "filters", "getCurrentFilters", "getTasks"]),
         curPage() {
-            return this.paging.page
+            return this.paging.page;
         }
     },
     mounted() {
-        console.log(this.getCurrentFilters);
+        this.fetchAllTasks();
+        this.fetchTasks({ filter: {
+            query: this.name,
+            assignedUsers: this.user,
+            type: this.type,
+            status: this.status,
+            rank: this.rank
+        }, page: this.curPage });
         this.setActiveTab(this.$route.fullPath);
-        this.name = this.filters[this.activeTab]['taskName'];
-        this.type = this.filters[this.activeTab]['type'];
-        this.user = this.filters[this.activeTab]['user'];
-        this.status = this.filters[this.activeTab]['status'];
-        this.rank = this.filters[this.activeTab]['rank'];
-        this.paging.page = this.filters[this.activeTab]['pagingPage']
+        this.name = this.filters[this.activeTab]["taskName"];
+        this.type = this.filters[this.activeTab]["type"];
+        this.user = this.filters[this.activeTab]["user"];
+        this.status = this.filters[this.activeTab]["status"];
+        this.rank = this.filters[this.activeTab]["rank"];
+        this.paging.page = this.filters[this.activeTab]["pagingPage"];
     },
     watch: {
         name(val) {
-            this.setFilters({filter: 'taskName', value: val})
-            console.log(this.name)
+            this.setFilters({ filter: "taskName", value: val });
+            console.log(this.name);
         },
         type(val) {
-            this.setFilters({filter: 'type', value: val})
+            this.setFilters({ filter: "type", value: val });
         },
         user(val) {
-            this.setFilters({filter: 'user', value: val})
+            this.setFilters({ filter: "user", value: val });
         },
         status(val) {
-            this.setFilters({filter: 'status', value: val})
+            this.setFilters({ filter: "status", value: val });
         },
         rank(val) {
-            this.setFilters({filter: 'rank', value: val})
+            this.setFilters({ filter: "rank", value: val });
         },
         curPage(val) {
-            this.setFilters({filter: 'pagingPage', value: val})
+            this.setFilters({ filter: "pagingPage", value: val });
+            this.fetchTasks({ filter: {
+                query: this.name,
+                assignedUsers: this.user,
+                type: this.type,
+                status: this.status,
+                rank: this.rank
+            }, page: this.curPage });
         }
-    }
+    },
+    components: { TaskListItem }
 }
 </script>
 

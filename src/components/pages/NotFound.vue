@@ -9,13 +9,12 @@
 
 
 <script>
-import router from '@/router'
 
 export default {
     methods: {
         navHome() {
             console.log('nav to home')
-            router.push({name: 'tasks'})
+            this.$router.push({name: 'tasks'})
         }
     }
 }
