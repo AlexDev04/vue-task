@@ -4,7 +4,7 @@
             <main class="taskPage">
                 <section class="taskPage-left">
                     <label>Исполнитель</label>
-                    <MyDropdown>
+                    <MyDropdown v-on:select="handleUser">
                         <template #default="slotProps">
                             <div name="Алексей" :class="[slotProps.className, {'active': slotProps.selected == 'Алексей'}]">Алексей</div>
                             <div name="Максим" :class="[slotProps.className, {'active': slotProps.selected == 'Максим'}]">Максим</div>
@@ -33,12 +33,14 @@
                     <TextInput 
                         type="primary"
                         :val="task.title"
+                        @input="handleName"
                     >
                     </TextInput>
                     <label>Описание</label>
                     <TextZone 
                         type="primary" 
                         :val="task.description"
+                        @input="handleDesc"
                     />
                 </section>
                 <section class="taskPage-right">
@@ -59,6 +61,7 @@ export default {
                 typeEn: 'task',
                 rankRu: 'Средний',
                 rankEn: 'middle',
+                status: 'opened',
                 dateOfCreation: '01.01.2022',
                 dateOfUpdate: '01.05.2022',
                 timeInMinutes: 30,
@@ -67,6 +70,25 @@ export default {
                 comments: ['ok', 'go']
             }
         }
+    },
+    methods: {
+        handleName(evt) {
+            evt.preventDefault();
+            this.task.title = evt.target.value
+            console.log(this.task.title)
+        },
+        handleDesc(evt) {
+            evt.preventDefault();
+            this.task.desc = evt.target.value
+            console.log(this.task.desc)
+        },
+        handleUser(val) {
+            console.log(val)
+            this.task.assigned = val
+        }
+    },
+    props: {
+        id: Number
     }
 }
 </script>

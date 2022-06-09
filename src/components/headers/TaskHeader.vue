@@ -4,7 +4,7 @@
             <h2>Задачи</h2>
         </div>
         <div>
-            <MyBut type="primary" @click="navCreate" text="Добавить задачу" />
+            <MyBut type="primary" @click="navCreate">Добавить задачу</MyBut>
         </div>
     </section>
     <section class="taskHeader" v-else-if="mode == 'taskView'">
@@ -13,9 +13,9 @@
             <TaskStatus status={task.status} />
         </div>
         <div>
-            <MyBut type="default" @click="handleChangeStatus" :text="task.changeStatusText" />
-            <MyBut type="primary" @click="navEdit" text="Редактировать" />
-            <MyBut type="error" @click="del" text="Удалить" />
+            <MyBut type="default" @click="changeStatus.act">{{changeStatus.text}}</MyBut>
+            <MyBut type="primary" @click="navEdit">Редактировать</MyBut>
+            <MyBut type="error" @click="del">Удалить</MyBut>
         </div>
     </section>
     <section class="taskHeader" v-else-if="mode == 'taskEdit'">
@@ -23,8 +23,8 @@
             <h2>Редактирование</h2>
         </div>
         <div>
-            <MyBut type="primary" @click="save" text="Сохранить" />
-            <MyBut type="default" @click="navMain" text="Отмена" />
+            <MyBut type="primary" @click="save">Сохранить</MyBut>
+            <MyBut type="default" @click="navMain">Отмена</MyBut>
         </div>
     </section>
     <section class="taskHeader" v-else-if="mode == 'taskAdd'">
@@ -32,8 +32,8 @@
             <h2>Создание</h2>
         </div>
         <div>
-            <MyBut type="primary" @click="save" text="Сохранить" />
-            <MyBut type="default" @click="navMain" text="Отмена" />
+            <MyBut type="primary" @click="save">Сохранить</MyBut>
+            <MyBut type="default" @click="navMain">Отмена</MyBut>
         </div>
     </section>
 </template>
@@ -59,20 +59,49 @@ export default {
     methods: {
         navCreate() {
                 console.log('nav to create')
-                router.push('/taskAdd')
+                router.push({name: 'taskAdd'})
         },
         navEdit() {
             console.log('nav to edit')
-            router.push(`taskEdit/${task.id}`)
+            router.push({name: 'taskEdit', params: {id: this.task.id}})
         },
         navMain() {
             console.log('nav to main')
+            router.push({name: 'tasks'})
         },
         del() {
             console.log('delete')
         },
         save() {
             console.log('save')
+        }
+    },
+    mounted() {
+        // console.log(this.task);
+        // console.log(this.changeStatus)
+    },
+    computed: {
+        changeStatus() {
+            let text, act
+            switch(this.task.status) {
+                case 'opened':
+                        text = 'В работу'
+                        act = ''
+                    break;
+                case 'inProgress':
+                    text = 'На тестирование'
+                    act = ''
+                    break;
+                case 'testing':
+                        text = 'Завершить'
+                        act = ''
+                    break;
+                case 'completed':
+                    text = 'Переоткрыть',
+                    act = ''
+                    break;
+            }
+            return {text: text, act: act}
         }
     }
 }

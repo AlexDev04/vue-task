@@ -1,5 +1,5 @@
 <template>
-    <input :placeholder="placeholder" @keyup="handleChange" :class="`textInput-${inputType}`">
+    <input :placeholder="placeholder" v-on="$listeners" :class="`textInput-${inputType}`" v-model="value">
 </template>
 
 
@@ -8,7 +8,8 @@
 export default {
     data() {
         return{
-            inputType: ''
+            inputType: '',
+            value: ''
         }
     },
     methods: {
@@ -31,8 +32,14 @@ export default {
         }
     },
     mounted() {
+        this.value = this.val;
         this.inputType = this.type;
         if(this.type == undefined) this.inputType = 'primary'
+    },
+    watch: {
+        val() {
+            this.value = this.val
+        }
     }
 }
 </script>

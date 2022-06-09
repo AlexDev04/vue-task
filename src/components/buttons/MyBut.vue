@@ -1,5 +1,7 @@
 <template>
-    <button :class=" butType" v-on="$listeners" :disabled="dis">{{text}}</button>
+    <button :class=" butType" v-on="$listeners" :disabled="dis">
+        <slot></slot>
+    </button>
 </template>
 
 
@@ -15,10 +17,6 @@ export default {
         type: {
             type: String,
             required: false
-        },
-        text: {
-            type: String || Number,
-            required: true
         },
         dis: {
             type: Boolean,

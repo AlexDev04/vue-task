@@ -5,14 +5,37 @@
         <router-link to="/users">Users</router-link> |
         <router-link to="/user/22">View user</router-link> |
         <router-link to="/taskEdit/22">Edit task</router-link> |
-        <router-link to="/taskAdd">Add task</router-link> |
         <router-link to="/task/22">View task</router-link> |
         <router-link to="/nf">Not found</router-link>
-
       </nav>
-      <router-view />
+      <p>{{loading}}</p>
+      <router-view :key="$route.fullPath" />
   </div>
 </template>
+
+
+<script>
+import { api } from '@/api/api.js';
+
+export default {
+  mounted() {
+    this.$store.dispatch('setLoading')
+    api.users.all()
+      .then(response => console.group(response));
+    console.log(this.$store.getters.allEvents)
+  },
+  computed: {
+    allEvents() {
+      return this.$store.getters.allEvents
+    },
+    loading() {
+      return this.$store.getters.loading? 'loading': 'not loading'
+    }
+  }
+}
+
+</script>
+
 
 <style scoped lang="scss">
 @import './_styles/style.sass';

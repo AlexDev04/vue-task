@@ -2,7 +2,7 @@
     <div id="root">
         <div class="notFound">
             <h1>Not found</h1>
-            <MyBut type="error" text="На главную" @click="navHome" />
+            <MyBut type="error" @click="navHome">На главную</MyBut>
         </div>
     </div>
 </template>
@@ -15,7 +15,7 @@ export default {
     methods: {
         navHome() {
             console.log('nav to home')
-            router.push('/tasks')
+            router.push({name: 'tasks'})
         }
     }
 }

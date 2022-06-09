@@ -12,14 +12,52 @@
                     {el.username}
                 </article>)} -->
             </section>
-            <MyPaging class="userList-pager" page="2" total="30" />
+            <MyPaging class="userList-pager" v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="paging.total" />
         </main>
     </div>
 </template>
 
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 
+export default {
+    data() {
+        return {
+            paging: {
+                page: 0,
+                total: 48
+            }
+        }
+    },
+    methods: {
+        ...mapActions(['setActiveTab', 'setFilters']),
+        pageUp() {
+            this.paging.page = this.paging.page + 1;
+        },
+        pageDn() {
+            this.paging.page = this.paging.page - 1;
+        },
+        toPage(p) {
+            this.paging.page = p
+        },
+    },
+    computed: {
+        ...mapGetters(['activeTab', 'filters', 'getCurrentFilters']),
+        curPage() {
+            return this.paging.page
+        }
+    },
+    mounted() {
+        this.setActiveTab(this.$route.fullPath);
+        this.paging.page = this.filters[this.activeTab]['pagingPage']
+    },
+    watch: {
+        curPage(val) {
+            this.setFilters({filter: 'pagingPage', value: val})
+        }
+    }
+}
 </script>
 
 
