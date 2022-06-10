@@ -8,6 +8,7 @@ import UserList from '@/components/pages/UserList.vue'
 import TaskView from '@/components/pages/TaskView.vue'
 import TaskEdit from '@/components/pages/TaskEdit.vue'
 import UserView from '@/components/pages/UserView.vue'
+import AuthPage from '@/components/pages/AuthPage.vue'
 
 const routes = [
   {
@@ -39,7 +40,12 @@ const routes = [
     props: true
   },
   {
-    path: '/nf',
+    path: '/',
+    name: 'auth',
+    component: AuthPage
+  },
+  {
+    path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: NotFound
   }

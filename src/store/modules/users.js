@@ -2,9 +2,10 @@ import { api } from "@/api/api"
 
 export default {
     actions: {
-        login({ commit }, {login, password}) {
+        authorize({ commit }, {login, password}) {
+            console.log(login, password)
             api.users.login(login, password)
-                .then(response => commit('login', response.data))
+                .then(response => commit('authorize', response.data))
         },
         fetchUsers({ commit }, page) {
             api.users.pagination(page, 10)
@@ -16,8 +17,9 @@ export default {
         }
     },
     mutations: {
-        login(state, data) {
+        authorize(state, data) {
             state.curUser = data;
+            state.authorized = true;
             console.log(state.curUser)
         },
         filteredUsers(state, data) {
@@ -33,14 +35,21 @@ export default {
         usersAll: [],
         users: {total: 10},
         curUser: {},
-        openeduser: {}
+        openeduser: {},
+        authorized: false
     },
     getters: {
+        isAuth(state) {
+            return state.authorized
+        },
         getUsers(state) {
             return state.users
         },
         getAllUsers(state) {
             return state.usersAll
+        },
+        getAuthorizedUser(state) {
+            return state.curUser
         }
     }
 }

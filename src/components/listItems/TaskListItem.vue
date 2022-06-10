@@ -36,7 +36,7 @@ export default {
     },
     methods: {
         handleOpen() {
-            this.$router.push({name: 'task', id: this.task.id})
+            this.$router.push({name: 'task', params: { id: this.task.id }})
         }
     }
 }

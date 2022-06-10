@@ -132,7 +132,7 @@ export default {
     
     &-content
         width: 100%
-        max-height: 60vh
+        max-height: 50vh
         margin: 30px 0 3px
         overflow-y: auto
 

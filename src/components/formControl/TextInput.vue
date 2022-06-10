@@ -1,5 +1,5 @@
 <template>
-    <input :placeholder="placeholder" v-on="$listeners" :class="`textInput-${inputType}`" v-model="value">
+    <input :placeholder="placeholder" v-on="$listeners" :class="`textInput-${inputType}`" v-model="value" :type="info">
 </template>
 
 
@@ -28,6 +28,10 @@ export default {
         },
         val: {
             type: String || Number,
+            required: false
+        },
+        info: {
+            type: String,
             required: false
         }
     },

@@ -6,9 +6,8 @@
                 <MultiDropdown class="taskList-sorting-type" v-on:select="handleType" :selected="type">
                     <template #default="slotProps">
                         <div>
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'React')? slotProps.active: '']" valEn="React" text="React" :checked="slotProps.sel.find(el => el == 'React')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Vue')? slotProps.active: '']" valEn="Vue" text="Vue" :checked="slotProps.sel.find(el => el == 'Vue')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Angular')? slotProps.active: '']" valEn="Angular" text="Angular" :checked="slotProps.sel.find(el => el == 'Angular')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'task')? slotProps.active: '']" valEn="task" text="Задача" :checked="slotProps.sel.find(el => el == 'task')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'bug')? slotProps.active: '']" valEn="bug" text="Баг" :checked="slotProps.sel.find(el => el == 'bug')" />
                         </div>
                     </template>
                 </MultiDropdown>
@@ -16,27 +15,26 @@
                 <MultiDropdown class="taskList-sorting-username" v-on:select="handleUser" :selected="user">
                     <template #default="slotProps">
                         <div>
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'React')? slotProps.active: '']" valEn="React" text="React" :checked="slotProps.sel.find(el => el == 'React')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Vue')? slotProps.active: '']" valEn="Vue" text="Vue" :checked="slotProps.sel.find(el => el == 'Vue')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Angular')? slotProps.active: '']" valEn="Angular" text="Angular" :checked="slotProps.sel.find(el => el == 'Angular')" />
+                            <MyCheckbox v-for="us in getAllUsers" :key="us.id" :class="[slotProps.className, slotProps.sel.find(el => el == us.id)? slotProps.active: '']" :valEn="us.id" :text="us.username" :checked="slotProps.sel.find(el => el == us.id)" />
                         </div>
                     </template>
                 </MultiDropdown>
                 <MultiDropdown class="taskList-sorting-status" v-on:select="handleStatus" :selected="status">
                     <template #default="slotProps">
                         <div>
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'React')? slotProps.active: '']" valEn="React" text="React" :checked="slotProps.sel.find(el => el == 'React')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Vue')? slotProps.active: '']" valEn="Vue" text="Vue" :checked="slotProps.sel.find(el => el == 'Vue')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Angular')? slotProps.active: '']" valEn="Angular" text="Angular" :checked="slotProps.sel.find(el => el == 'Angular')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'opened')? slotProps.active: '']" valEn="opened" text="Открыто" :checked="slotProps.sel.find(el => el == 'opened')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'inProgress')? slotProps.active: '']" valEn="inProgress" text="В работе" :checked="slotProps.sel.find(el => el == 'inProgress')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'testing')? slotProps.active: '']" valEn="testing" text="Тестируется" :checked="slotProps.sel.find(el => el == 'testing')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'complete')? slotProps.active: '']" valEn="complete" text="Сделано" :checked="slotProps.sel.find(el => el == 'complete')" />
                         </div>
                     </template>
                 </MultiDropdown>
                 <MultiDropdown class="taskList-sorting-priority" v-on:select="handleRank" :selected="rank">
                     <template #default="slotProps">
                         <div>
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'React')? slotProps.active: '']" valEn="React" text="React" :checked="slotProps.sel.find(el => el == 'React')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Vue')? slotProps.active: '']" valEn="Vue" text="Vue" :checked="slotProps.sel.find(el => el == 'Vue')" />
-                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'Angular')? slotProps.active: '']" valEn="Angular" text="Angular" :checked="slotProps.sel.find(el => el == 'Angular')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'high')? slotProps.active: '']" valEn="high" text="Высокий" :checked="slotProps.sel.find(el => el == 'high')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'middle')? slotProps.active: '']" valEn="middle" text="Средний" :checked="slotProps.sel.find(el => el == 'middle')" />
+                            <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'low')? slotProps.active: '']" valEn="low" text="Низкий" :checked="slotProps.sel.find(el => el == 'low')" />
                         </div>
                     </template>
                 </MultiDropdown>
@@ -53,7 +51,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import TaskListItem from '../listItems/TaskListItem.vue';
 
 export default {
     data() {
@@ -122,13 +119,14 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(["activeTab", "filters", "getCurrentFilters", "getTasks"]),
+        ...mapGetters(["activeTab", "filters", "getCurrentFilters", "getTasks", "getAllUsers"]),
         curPage() {
             return this.paging.page;
         }
     },
     mounted() {
         this.fetchAllTasks();
+        this.fetchAllUsers();
         this.fetchTasks({ filter: {
             query: this.name,
             assignedUsers: this.user,
@@ -172,7 +170,6 @@ export default {
             }, page: this.curPage });
         }
     },
-    components: { TaskListItem }
 }
 </script>
 

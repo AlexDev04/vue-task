@@ -69,7 +69,8 @@ export default {
                 timeInMinutes: 30,
                 title: 'Настроить прокси',
                 desc: 'Задачка',
-                comments: ['ok', 'go']
+                comments: ['ok', 'go'],
+                id: 1
             }
         }
     },
