@@ -20,10 +20,10 @@
 export default {
     computed: {
         isTasks() {
-            if(this.$route.path === '/tasks') return 'navigation-link-active'
+            if(this.$route.name === 'tasks' || this.$route.name === 'task' || this.$route.name === 'taskEdit' || this.$route.name === 'taskAdd') return 'navigation-link-active'
         },
         isUsers() {
-            if(this.$route.path === '/users') return 'navigation-link-active'
+            if(this.$route.name === 'users' || this.$route.name === 'user') return 'navigation-link-active'
         }
     }
 }

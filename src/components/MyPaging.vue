@@ -29,8 +29,8 @@
             }
         },
         computed: {
-            pageCur(){return + this.page},
-            maxPageCur(){return Math.ceil(this.total / 10 - 1)},
+            pageCur() {return + this.page},
+            maxPageCur() {return Math.ceil(this.total / 10 - 1)},
             totalCur() {return + this.total},
             pagesCur() {return Math.ceil(this.total / 10)},
             pagesArr() {return [...Array(this.pagesCur)]},

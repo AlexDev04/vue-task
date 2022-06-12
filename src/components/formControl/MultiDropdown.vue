@@ -33,6 +33,10 @@ export default {
         selected: {
             type: Array,
             required: false
+        },
+        name: {
+            type: String,
+            required: true
         }
     },
     methods: {

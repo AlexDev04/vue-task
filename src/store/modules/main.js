@@ -13,6 +13,9 @@ export default {
         },
         setFilters({ commit }, {filter, value}) {
             commit('setFilters', {filter, value})
+        },
+        changeModal({ commit }) {
+            commit('setModal')
         }
     },
     mutations: {
@@ -29,17 +32,22 @@ export default {
         },
         setActiveTab(state, data) {
             state.activeTab = data
+        },
+        setModal(state) {
+            state.modal = !state.modal
         }
     },
     state: {
         filters: {},
         loading: false,
-        activeTab: ''
+        activeTab: '',
+        modal: false
     },
     getters: {
         loading: state => state.loading,
         activeTab: state => state.activeTab,
         filters: state => state.filters,
-        getCurrentFilters: (state, getters) => state.filters[getters.activeTab]
+        getCurrentFilters: (state, getters) => state.filters[getters.activeTab],
+        isModal: state => state.modal
     }
 }

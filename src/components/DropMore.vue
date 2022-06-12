@@ -33,27 +33,27 @@ export default {
         }
     },
     methods: {
-        handleEdit(id) {
-            this.$router.push({name: 'taskEdit', id: id})
+        handleEdit() {
+            this.$router.push({name: 'taskEdit', id: this.id})
         },
-        handleDelete(id) {
-            api.tasks.delete(id)
+        handleDelete() {
+            api.tasks.delete(this.id)
                 .then(response => console.log(response))
         },
-        handleInWork(id) {
-            api.tasks.status(id, 'inProgress')
+        handleInWork() {
+            api.tasks.status(this.id, 'inProgress')
                 .then(response => console.log(response))
         },
-        handleTest(id) {
-            api.tasks.status(id, 'testing')
+        handleTest() {
+            api.tasks.status(this.id, 'testing')
                 .then(response => console.log(response))
         },
-        handleComplete(id) {
-            api.tasks.status(id, 'complete')
+        handleComplete() {
+            api.tasks.status(this.id, 'complete')
                 .then(response => console.log(response))
         },
-        handleReOpen(id) {
-            api.tasks.status(id, 'opened')
+        handleReOpen() {
+            api.tasks.status(this.id, 'opened')
                 .then(response => console.log(response))
         }
     },

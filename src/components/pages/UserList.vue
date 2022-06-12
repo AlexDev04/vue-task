@@ -35,12 +35,13 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(["activeTab", "filters", "getCurrentFilters", 'getUsers']),
+        ...mapGetters(["isAuth","activeTab", "filters", "getCurrentFilters", 'getUsers']),
         curPage() {
             return this.paging.page;
         }
     },
     mounted() {
+        if(!this.isAuth) this.$router.push({name: 'auth'})
         this.fetchAllUsers();
         this.fetchUsers(this.curPage);
         this.setActiveTab(this.$route.fullPath);

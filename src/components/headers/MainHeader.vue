@@ -1,6 +1,6 @@
 <template>
     <header class="mainHeader">
-        <img :src="logo" @click="navHome" />
+        <img src="@/_images/Logo.svg" @click="navHome" />
         <MyNav v-if="notAuthPage" />
         <UserProfile v-if="notAuthPage" :user="user" />
     </header>
@@ -11,7 +11,7 @@
 export default {
     data() {
         return {
-            logo: '@/_images/Logo.svg'
+
         }
     },
     methods: {
@@ -51,6 +51,7 @@ export default {
         margin: 20px
         width: 120px
         height: 20px
+        align-self: center
 
         &:hover
             cursor: pointer

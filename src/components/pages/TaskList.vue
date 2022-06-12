@@ -3,7 +3,7 @@
         <TaskHeader mode="taskList" :task="task" />
         <main class="taskList">
             <section class="taskList-sorting">
-                <MultiDropdown class="taskList-sorting-type" v-on:select="handleType" :selected="type">
+                <MultiDropdown name="Тип" class="taskList-sorting-type" v-on:select="handleType" :selected="type">
                     <template #default="slotProps">
                         <div>
                             <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'task')? slotProps.active: '']" valEn="task" text="Задача" :checked="slotProps.sel.find(el => el == 'task')" />
@@ -12,14 +12,14 @@
                     </template>
                 </MultiDropdown>
                 <TextInput placeholder="Название задачи" class="taskList-sorting-name" @input="changeName" :val="name" />
-                <MultiDropdown class="taskList-sorting-username" v-on:select="handleUser" :selected="user">
+                <MultiDropdown name="Пользователь" class="taskList-sorting-username" v-on:select="handleUser" :selected="user">
                     <template #default="slotProps">
                         <div>
                             <MyCheckbox v-for="us in getAllUsers" :key="us.id" :class="[slotProps.className, slotProps.sel.find(el => el == us.id)? slotProps.active: '']" :valEn="us.id" :text="us.username" :checked="slotProps.sel.find(el => el == us.id)" />
                         </div>
                     </template>
                 </MultiDropdown>
-                <MultiDropdown class="taskList-sorting-status" v-on:select="handleStatus" :selected="status">
+                <MultiDropdown name="Статус" class="taskList-sorting-status" v-on:select="handleStatus" :selected="status">
                     <template #default="slotProps">
                         <div>
                             <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'opened')? slotProps.active: '']" valEn="opened" text="Открыто" :checked="slotProps.sel.find(el => el == 'opened')" />
@@ -29,7 +29,7 @@
                         </div>
                     </template>
                 </MultiDropdown>
-                <MultiDropdown class="taskList-sorting-priority" v-on:select="handleRank" :selected="rank">
+                <MultiDropdown name="Приоритет" class="taskList-sorting-priority" v-on:select="handleRank" :selected="rank">
                     <template #default="slotProps">
                         <div>
                             <MyCheckbox :class="[slotProps.className, slotProps.sel.find(el => el == 'high')? slotProps.active: '']" valEn="high" text="Высокий" :checked="slotProps.sel.find(el => el == 'high')" />
@@ -41,9 +41,9 @@
                 <MyBut type="primary" @click="click">Применить</MyBut>
             </section>
             <section class="taskList-list">
-                <TaskListItem v-for="el in getTasks.data" :task="el" :key="el.id" />
+                <TaskListItem v-for="(el, index) in getTasks.data" :index="index" :task="el" :key="el.id" />
             </section>
-            <MyPaging v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="getTasks.total" />
+            <MyPaging v-if="getTasks.total" v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="getTasks.total" />
         </main>
     </div>
 </template>
@@ -119,12 +119,13 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(["activeTab", "filters", "getCurrentFilters", "getTasks", "getAllUsers"]),
+        ...mapGetters(["isAuth", "activeTab", "filters", "getCurrentFilters", "getTasks", "getAllUsers"]),
         curPage() {
             return this.paging.page;
         }
     },
     mounted() {
+        if(!this.isAuth) this.$router.push({name: 'auth'})
         this.fetchAllTasks();
         this.fetchAllUsers();
         this.fetchTasks({ filter: {

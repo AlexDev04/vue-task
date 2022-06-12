@@ -5,7 +5,10 @@ export default {
         authorize({ commit }, {login, password}) {
             console.log(login, password)
             api.users.login(login, password)
-                .then(response => commit('authorize', response.data))
+                .then(response => commit('authorize', {data: response.data, password: password}))
+        },
+        logOut({ commit }) {
+            commit('logOut')
         },
         fetchUsers({ commit }, page) {
             api.users.pagination(page, 10)
@@ -14,13 +17,35 @@ export default {
         fetchAllUsers({ commit }) {
             api.users.all()
                 .then(response => commit('allUsers', response.data))
+        },
+        userById({ commit }, id) {
+            console.log(id)
+            // let data = {};
+            // api.users.id(id)
+            //     .then(response => {
+            //         data.id = response.data.id,
+            //         data.about = response.data.about,
+            //         data.login = response.data.login,
+            //         data.photoUrl = response.data.photoUrl,
+            //         data.username = response.data
+            //         api.tasks.filter(0, 10, {assignedUsers: [id]})
+            //         .then(response => data.tasks = response.data)
+            //     })
+            //     .then(commit('userById', data))
+            api.users.id(id)
+                .then(response => commit('userById', response.data))
+
         }
     },
     mutations: {
         authorize(state, data) {
-            state.curUser = data;
+            state.curUser = data.data;
+            state.curUser.password = data.password
             state.authorized = true;
             console.log(state.curUser)
+        },
+        logOut(state) {
+            state.authorized = false
         },
         filteredUsers(state, data) {
             state.users = data;
@@ -28,6 +53,11 @@ export default {
         allUsers(state, data) {
             state.usersAll = data;
             console.log(state.users)
+        },
+        userById(state, data) {
+            console.log(data)
+            state.openedUser = data
+            console.log(state.openedUser)
         }
 
     },
@@ -35,7 +65,7 @@ export default {
         usersAll: [],
         users: {total: 10},
         curUser: {},
-        openeduser: {},
+        openedUser: {},
         authorized: false
     },
     getters: {
@@ -50,6 +80,9 @@ export default {
         },
         getAuthorizedUser(state) {
             return state.curUser
+        },
+        getOpenedUser(state) {
+            return state.openedUser
         }
     }
 }

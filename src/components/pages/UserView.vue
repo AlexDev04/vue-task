@@ -1,10 +1,11 @@
 <template>
     <div id="root">
-        <UserHeader mode="userView" />
+        <MyModal :modal="isModal" :key="curRoute" :id="id" />
+        <UserHeader mode="userView" :user="user" />
         <main class="userPage">
             <div class="userPage-left">
                 <div class="userPage-left-img">
-                    <img :src="user.userImg" />
+                    <img :src="user.photoUrl" />
                 </div>
                 <h3 class="placeholder">О себе</h3>
                 <p>
@@ -15,17 +16,15 @@
             <div class="userPage-right">
                 <h3 class="placeholder">Задачи</h3>
                 <section class="userPage-right-tasks">
-                    <!-- {tasks && tasks.map(el => 
                     <TaskListItem
-                        className={tasks.indexOf(el) % 2 == 0 && 'userPage-right-tasks-item-grayed'}
-                        type={el.type}
-                        taskName={el.title}
-                        status={el.status}
-                        rank={el.rank}
-                        id={el.id}
-                    />)} -->
+                        v-for="(el, index) in getUserTasks.data"
+                        :index="index"
+                        :key="el.id"
+                        :task="el"
+                        :short="true"
+                    />
                 </section>
-                <MyPaging class="userList-pager" v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="paging.total" />
+                <MyPaging class="userList-pager" v-on:toPage="toPage" v-on:nextPage="pageUp" v-on:prevPage="pageDn" :page="paging.page" :total="getUserTasks.total" />
             </div>
         </main>
     </div>
@@ -38,8 +37,9 @@ export default {
     data() {
         return {
             user: {
+                username: 'Alexey',
                 about: 'Some text',
-                userImg: ''
+                userImg: 'a'
             },
             paging: {
                 page: 0,
@@ -48,7 +48,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['setActiveTab', 'setFilters']),
+        ...mapActions(['setActiveTab', 'setFilters', 'userById', 'userTasks']),
         pageUp() {
             this.paging.page = this.paging.page + 1;
         },
@@ -60,18 +60,32 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['activeTab', 'filters', 'getCurrentFilters']),
+        ...mapGetters(['isAuth','activeTab', 'filters', 'getCurrentFilters', 'getOpenedUser', 'getUserTasks', 'isModal']),
         curPage() {
             return this.paging.page
+        },
+        curRoute() {
+            return this.$route.fullPath
         }
     },
     mounted() {
+        if(!this.isAuth) this.$router.push({name: 'auth'})
+        this.userById(this.id);
+        console.log(this.getOpenedUser);
+        this.userTasks({id: this.id, page: this.paging.page});
+        console.log();
+        this.user = this.getOpenedUser;
         this.setActiveTab(this.$route.fullPath);
         this.paging.page = this.filters[this.activeTab]['pagingPage']
     },
     watch: {
         curPage(val) {
             this.setFilters({filter: 'pagingPage', value: val})
+            this.userTasks({id: this.id, page: this.paging.page})
+        }, 
+        getOpenedUser(val) {
+            this.user = val
+            console.log(val)
         }
     },
     props: {
@@ -80,7 +94,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../_styles/style'
 
 .userPage

@@ -23,10 +23,18 @@ const routes = [
     props: true
   },
   {
-    path: '/taskEdit/:id',
-    name: 'taskEdit',
+    path: '/taskEdit',
+    name: 'taskAdd',
     component: TaskEdit,
-    props: true
+    props: true,
+    children: [
+      {
+        path: '/taskEdit/:id',
+        name: 'taskEdit',
+        component: TaskEdit,
+        props: true,
+      }
+    ]
   },
   {
     path: '/users',

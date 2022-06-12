@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         handleNav() {
-            this.$router.push({name: 'user', params: { id: user.id }})
+            this.$router.push({name: 'user', params: { id: this.user.id }})
         }
     },
     computed: {

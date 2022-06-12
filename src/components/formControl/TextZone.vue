@@ -45,14 +45,13 @@ export default {
     outline: none
     @include zone()
     @include emptyTextArea()
-    @include textArea($error)
 
     &:invalid
         border: none
 
-        &:hover
-            margin: -1px
-            @include textArea($error)
+    &:hover
+        margin: -1px
+        @include textArea($error)
 
     &:focus
         @include redTextAreaActive()
@@ -64,14 +63,13 @@ export default {
     outline: none
     @include zone()
     @include emptyTextArea()
-    @include textArea($success)
 
     &:invalid
         border: none
 
-        &:hover
-            margin: -1px
-            @include textArea($success)
+    &:hover
+        margin: -1px
+        @include textArea($success)
 
     &:focus
         @include greenTextAreaActive()
@@ -83,14 +81,13 @@ export default {
     outline: none
     @include zone()
     @include emptyTextArea()
-    @include textArea($primary)
 
     &:invalid
         border: none
 
-        &:hover
-            margin: -1px
-            @include textArea($primary)
+    &:hover
+        margin: -1px
+        @include textArea($primary)
 
     &:focus
         @include purpleTextAreaActive()

@@ -1,18 +1,20 @@
 <template>
     <div class="userProfile">
-        <p>ok</p>
+        <p>{{getAuthorizedUser.username}}</p>
         <div class="userProfile-icon">
-            <img src="a" />
+            <img :src="getAuthorizedUser.photoUrl" />
         </div>
         <div class="userProfile-content">
             <p @click="handleUser">Посмотреть профиль</p>
-            <p class="userProfile-content-out" @click="handleLogout">Выйти из системы</p>
+            <p class="userProfile-content-out" @click="handleLogOut">Выйти из системы</p>
         </div>
     </div>
 </template>
 
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     data() {
         return {
@@ -25,9 +27,19 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['logOut']),
         handleUser() {
-            this.$router.push({name: 'user', params:{ id: this.id }})
+            this.$router.push({name: 'user', params: { id: this.user.id }})
+        },
+        handleLogOut() {
+            this.logOut()
         }
+    },
+    mounted() {
+        console.log(this.getAuthorizedUser)
+    },
+    computed: {
+        ...mapGetters(['getAuthorizedUser'])
     }
 }
 </script>
