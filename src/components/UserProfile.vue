@@ -33,6 +33,7 @@ export default {
         },
         handleLogOut() {
             this.logOut()
+            this.$router.push({name: 'auth'})
         }
     },
     mounted() {
