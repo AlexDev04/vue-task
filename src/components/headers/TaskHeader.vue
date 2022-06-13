@@ -13,9 +13,9 @@
             <TaskStatus status={task.status} />
         </div>
         <div>
-            <MyBut type="default" @click="changeStatus.act">{{changeStatus.text}}</MyBut>
+            <MyBut type="default" @click="changeStatusAct">{{changeStatus}}</MyBut>
             <MyBut type="primary" @click="navEdit">Редактировать</MyBut>
-            <MyBut type="error" @click="del">Удалить</MyBut>
+            <MyBut type="error" @click="$emit('delete')">Удалить</MyBut>
         </div>
     </section>
     <section class="taskHeader" v-else-if="mode == 'taskEdit'">
@@ -23,7 +23,7 @@
             <h2>Редактирование</h2>
         </div>
         <div>
-            <MyBut type="primary" @click="save">Сохранить</MyBut>
+            <MyBut type="primary" @click="$emit('saveTask')">Сохранить</MyBut>
             <MyBut type="default" @click="navMain">Отмена</MyBut>
         </div>
     </section>
@@ -32,14 +32,14 @@
             <h2>Создание</h2>
         </div>
         <div>
-            <MyBut type="primary" @click="save">Сохранить</MyBut>
+            <MyBut type="primary" @click="$emit('addTask')">Сохранить</MyBut>
             <MyBut type="default" @click="navMain">Отмена</MyBut>
         </div>
     </section>
 </template>
 
 <script>
-import router from '@/router'
+import { api } from '@/api/api'
 
 export default {
     data() {
@@ -58,22 +58,34 @@ export default {
     },
     methods: {
         navCreate() {
-                console.log('nav to create')
-                router.push({name: 'taskAdd'})
+            console.log('nav to create')
+            this.$router.push({name: 'taskAdd'})
         },
         navEdit() {
             console.log('nav to edit')
-            router.push({name: 'taskEdit', params: {id: this.task.id}})
+            this.$router.push({name: 'taskEdit', params: {id: this.task.id}})
         },
         navMain() {
             console.log('nav to main')
-            router.push({name: 'tasks'})
+            this.$router.push({name: 'tasks'})
         },
-        del() {
-            console.log('delete')
-        },
-        save() {
-            console.log('save')
+        changeStatusAct() {
+            if(this.task) {
+                switch(this.task.status) {
+                    case 'opened':
+                        api.tasks.status(this.task.id, 'inProgress')
+                        break;
+                    case 'inProgress':
+                        api.tasks.status(this.task.id, 'testing')
+                        break;
+                    case 'testing':
+                        api.tasks.status(this.task.id, 'complete')
+                        break;
+                    case 'complete':
+                        api.tasks.status(this.task.id, 'opened')
+                        break;
+                }
+            }
         }
     },
     mounted() {
@@ -82,26 +94,23 @@ export default {
     },
     computed: {
         changeStatus() {
-            let text, act
+            let text;
+            console.log(this.task.status)
             switch(this.task.status) {
                 case 'opened':
-                        text = 'В работу'
-                        act = ''
+                    text = 'В работу'
                     break;
                 case 'inProgress':
                     text = 'На тестирование'
-                    act = ''
                     break;
                 case 'testing':
-                        text = 'Завершить'
-                        act = ''
+                    text = 'Завершить'
                     break;
-                case 'completed':
-                    text = 'Переоткрыть',
-                    act = ''
+                case 'complete':
+                    text = 'Переоткрыть'
                     break;
             }
-            return {text: text, act: act}
+            return text
         }
     }
 }

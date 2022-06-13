@@ -8,6 +8,7 @@ import UserList from '@/components/pages/UserList.vue'
 import TaskView from '@/components/pages/TaskView.vue'
 import TaskEdit from '@/components/pages/TaskEdit.vue'
 import UserView from '@/components/pages/UserView.vue'
+import AuthPage from '@/components/pages/AuthPage.vue'
 
 const routes = [
   {
@@ -22,10 +23,18 @@ const routes = [
     props: true
   },
   {
-    path: '/taskEdit/:id',
-    name: 'taskEdit',
+    path: '/taskEdit',
+    name: 'taskAdd',
     component: TaskEdit,
-    props: true
+    props: true,
+    children: [
+      {
+        path: '/taskEdit/:id',
+        name: 'taskEdit',
+        component: TaskEdit,
+        props: true,
+      }
+    ]
   },
   {
     path: '/users',
@@ -39,7 +48,12 @@ const routes = [
     props: true
   },
   {
-    path: '/nf',
+    path: '/',
+    name: 'auth',
+    component: AuthPage
+  },
+  {
+    path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: NotFound
   }

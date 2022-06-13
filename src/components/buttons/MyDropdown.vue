@@ -17,7 +17,6 @@ export default {
     data() {
         return {
             open: false,
-            name: 'open me',
             curSelected: {ru: '', en: ''}
         }
     },
@@ -29,11 +28,23 @@ export default {
         selected: {
             type: Object,
             required: false
+        },
+        name: {
+            type: String,
+            required: true
         }
     },
     mounted() {
         this.curSelected.ru = this.selected.ru
         this.curSelected.en = this.selected.en
+    },
+    watch: {
+        'selected.ru'(val) {
+            this.curSelected.ru = val
+        },
+        'selected.en'(val) {
+            this.curSelected.en = val
+        }
     },
     methods: {
         handleOpen() {
@@ -125,7 +136,7 @@ export default {
     
     &-content
         width: 100%
-        max-height: 60vh
+        max-height: 40vh
         margin: 30px 0 3px
         overflow-y: auto
 

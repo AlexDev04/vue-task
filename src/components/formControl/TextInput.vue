@@ -1,5 +1,5 @@
 <template>
-    <input :placeholder="placeholder" v-on="$listeners" :class="`textInput-${inputType}`" v-model="value">
+    <input :placeholder="placeholder" v-on="$listeners" :class="`textInput-${inputType}`" v-model="value" :type="info">
 </template>
 
 
@@ -29,6 +29,10 @@ export default {
         val: {
             type: String || Number,
             required: false
+        },
+        info: {
+            type: String,
+            required: false
         }
     },
     mounted() {
@@ -56,15 +60,11 @@ export default {
     outline: none
     @include input()
     @include emptyTextArea()
-    @include textArea($error)
-
     &:invalid
         border: none
 
-        &:hover
-            margin-left: -1px
-            margin-right: -1px
-            @include textArea($error)
+    &:hover
+        @include textArea($error)
 
     &:focus
         @include redTextAreaActive()
@@ -76,15 +76,12 @@ export default {
     outline: none
     @include input()
     @include emptyTextArea()
-    @include textArea($success)
 
     &:invalid
         border: none
 
-        &:hover
-            margin-left: -1px
-            margin-right: -1px
-            @include textArea($success)
+    &:hover
+        @include textArea($success)
 
     &:focus
         @include greenTextAreaActive()
@@ -96,15 +93,12 @@ export default {
     @include input()
     outline: none
     @include emptyTextArea()
-    @include textArea($primary)
 
     &:invalid
         border: none
 
-        &:hover
-            margin-left: -1px
-            margin-right: -1px
-            @include textArea($primary)
+    &:hover
+        @include textArea($primary)
 
     &:focus
         @include purpleTextAreaActive()

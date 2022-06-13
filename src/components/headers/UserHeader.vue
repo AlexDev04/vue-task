@@ -4,10 +4,9 @@
                 <h2>{{user.username}}</h2>
             </div>
             <div>
-                <MyBut type="default" @click="createTask" text="Добавить задачу" />
-                <!-- {store.openedUser.id === store.curUser.id &&
-                    <MyBut type="primary" onClick={handleOpen}>Редактировать</MyBut>
-                } -->
+                <MyBut type="default" @click="createTask">Добавить задачу</MyBut>
+                <MyBut v-if="user.id == getAuthorizedUser.id" type="primary" @click="handleEdit">Редактировать</MyBut>
+
             </div>
         </section>
         <section v-else-if="mode == 'userList'" class="userHeader">
@@ -20,24 +19,33 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
     data() {
-        return {
-            user: {
-                username: 'Alex'
-            }
-        }
+        return {};
     },
     props: {
         mode: {
             type: String,
             required: true
+        },
+        user: {
+            type: Object,
+            required: false
         }
     },
     methods: {
+        ...mapActions(['changeModal']),
         createTask() {
-            console.log('nav to create task')
+            console.log("nav to create task");
+        },
+        handleEdit() {
+            this.changeModal()
         }
+    },
+    computed: {
+        ...mapGetters(['getAuthorizedUser'])
     }
 }
 </script>
