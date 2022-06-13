@@ -20,18 +20,6 @@ export default {
         },
         userById({ commit }, id) {
             console.log(id)
-            // let data = {};
-            // api.users.id(id)
-            //     .then(response => {
-            //         data.id = response.data.id,
-            //         data.about = response.data.about,
-            //         data.login = response.data.login,
-            //         data.photoUrl = response.data.photoUrl,
-            //         data.username = response.data
-            //         api.tasks.filter(0, 10, {assignedUsers: [id]})
-            //         .then(response => data.tasks = response.data)
-            //     })
-            //     .then(commit('userById', data))
             api.users.id(id)
                 .then(response => commit('userById', response.data))
 

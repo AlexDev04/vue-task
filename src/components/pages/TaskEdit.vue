@@ -4,7 +4,7 @@
         <main v-if="id" class="taskPage">
             <section class="taskPage-left">
                 <label>Исполнитель</label>
-                <MyDropdown name="Исполнитель" v-on:select="handleUser" :selected="{ru: getAllUsers.find(el => el.id = getTask.assignedId).username, en: getTask.assignedId}">
+                <MyDropdown name="Исполнитель" v-on:select="handleUser" :selected="{en: getTask.assignedId, ru: task.assigned}">
                     <template #default="slotProps">
                         <div v-for="el in getAllUsers" :name="el.id" :class="[slotProps.className, {'active': slotProps.selected == el.id}]">{{el.username}}</div>
                     </template>
@@ -139,9 +139,10 @@ export default {
     },
     mounted() {
         if(!this.isAuth) this.$router.push({name: 'auth'})
-        console.log(this.id)
-        if(this.id) this.taskById(this.id);
-        this.task = this.getTask
+        if(this.id) {
+            this.taskById(this.id);
+            this.task = this.getTask
+        }
     },
     computed: {
         ...mapGetters(['isAuth','getTask', 'getAllUsers', 'getAuthorizedUser']),
@@ -154,6 +155,7 @@ export default {
         getTask(val) {
             console.log(val)
             this.task = val
+            this.task.assigned = this.getAllUsers.find(el => el.id == this.getTask.assignedId).username
             console.log(this.task)
         },
         getAllUsers(val) {

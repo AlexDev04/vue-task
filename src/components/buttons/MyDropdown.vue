@@ -38,6 +38,14 @@ export default {
         this.curSelected.ru = this.selected.ru
         this.curSelected.en = this.selected.en
     },
+    watch: {
+        'selected.ru'(val) {
+            this.curSelected.ru = val
+        },
+        'selected.en'(val) {
+            this.curSelected.en = val
+        }
+    },
     methods: {
         handleOpen() {
             this.open = !this.open
